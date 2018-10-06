@@ -8,7 +8,8 @@ import os
 class PremakeInstallerConan(ConanFile):
     name = "premake_installer"
     version = "5.0.0-alpha12"
-    description = "Keep it short"
+    description = "Premake is a command line utility which reads a scripted definition of a software project and, " \
+                  "most commonly, uses it to generate project files for toolsets like Visual Studio, Xcode, or GNU Make"
     url = "https://github.com/bincrafters/conan-premake_installer"
     homepage = "https://premake.github.io/"
     author = "Bincrafters <bincrafters@gmail.com>"
