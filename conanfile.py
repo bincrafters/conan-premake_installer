@@ -16,16 +16,16 @@ class PremakeInstallerConan(ConanFile):
     license = "BSD"
     exports = ["LICENSE.md"]
     settings = 'os_build', 'arch_build', 'compiler'
-    source_subfolder = "source_subfolder"
-    build_subfolder = "build_subfolder"
+    _source_subfolder = "source_subfolder"
+    _build_subfolder = "build_subfolder"
 
     def source(self):
         source_url = "https://github.com/premake/premake-core/archive/v{version}.tar.gz".format(version=self.version)
-        tools.get(source_url)
-        os.rename('premake-core-%s' % self.version, self.source_subfolder)
+        tools.get(source_url, sha256="329255c2e7f135289745e3bc4510bdc69edafbdfd52feed4f1916b646cc51520")
+        os.rename('premake-core-%s' % self.version, self._source_subfolder)
 
     def build(self):
-        with tools.chdir(self.source_subfolder):
+        with tools.chdir(self._source_subfolder):
             if self.settings.os_build == 'Windows':
                 with tools.vcvars(self.settings):
                     self.run('nmake -f Bootstrap.mak windows')
