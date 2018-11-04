@@ -7,7 +7,7 @@ import os
 
 class PremakeInstallerConan(ConanFile):
     name = "premake_installer"
-    version = "4.4-beta5"
+    version = "4.3"
     description = "Premake is a command line utility which reads a scripted definition of a software project and, " \
                   "most commonly, uses it to generate project files for toolsets like Visual Studio, Xcode, or GNU Make"
     url = "https://github.com/bincrafters/conan-premake_installer"
@@ -24,12 +24,13 @@ class PremakeInstallerConan(ConanFile):
     def source(self):
         if self.settings.os_build == "Windows":
             zip_name = "windows.zip"
+            zip_sha256 = "f2e9c2d7b33e06b51dc2d0a9d4d1d398e4debad0d8254e17a031b04f57da4d67"
         elif self.settings.os_build == "Linux":
             zip_name = "linux.tar.gz"
         elif self.settings.os_build == "Macos":
             zip_name = "macosx.tar.gz"
-        source_url = "http://sourceforge.net/projects/premake/files/Premake/4.4/premake-{}-{}/download".format(self.version, zip_name)
-        tools.get(source_url, sha256="09614c122156617a2b7973cc9f686daa32e64e3e7335d38db887cfb8f6a8574d")
+        source_url = "http://sourceforge.net/projects/premake/files/Premake/4.3/premake-{}-{}/download".format(self.version, zip_name)
+        tools.get(source_url, sha256=zip_sha256)
         # os.rename('premake-core-%s' % self.version, self._source_subfolder)
 
     def build(self):
