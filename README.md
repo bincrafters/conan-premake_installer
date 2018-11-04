@@ -1,6 +1,6 @@
 [![Download](https://api.bintray.com/packages/bincrafters/public-conan/premake_installer%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/premake_installer%3Abincrafters/_latestVersion)
-[![Build Status Travis](https://travis-ci.org/bincrafters/conan-premake_installer.svg?branch=stable%2F5.0.0-alpha13)](https://travis-ci.org/bincrafters/conan-premake_installer)
-[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-premake_installer?branch=stable%2F5.0.0-alpha13&svg=true)](https://ci.appveyor.com/project/bincrafters/conan-premake_installer)
+[![Build Status Travis](https://travis-ci.org/bincrafters/conan-premake_installer.svg?branch=stable%2F4.4-beta3)](https://travis-ci.org/bincrafters/conan-premake_installer)
+[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-premake_installer?branch=stable%2F4.4-beta3&svg=true)](https://ci.appveyor.com/project/bincrafters/conan-premake_installer)
 
 ## Conan package recipe for [*premake_installer*](https://premake.github.io/)
 
@@ -20,14 +20,14 @@ If you wish to report an issue or make a request for a Bincrafters package, plea
 
 ### Basic setup
 
-    $ conan install premake_installer/5.0.0-alpha13@bincrafters/stable
+    $ conan install premake_installer/4.4-beta3@bincrafters/stable
 
 ### Project setup
 
 If you handle multiple dependencies in your project is better to add a *conanfile.txt*
 
     [requires]
-    premake_installer/5.0.0-alpha13@bincrafters/stable
+    premake_installer/4.4-beta3@bincrafters/stable
 
     [generators]
     txt
@@ -58,4 +58,4 @@ The following command both runs all the steps of the conan file, and publishes t
 NOTE: The conan recipe license applies only to the files of this recipe, which can be used to build and package premake_installer.
 It does *not* in any way apply or is related to the actual software being packaged.
 
-[MIT](https://github.com/bincrafters/conan-premake_installer/blob/stable/5.0.0-alpha13/LICENSE.md)
+[MIT](https://github.com/bincrafters/conan-premake_installer/blob/stable/4.4-beta3/LICENSE.md)
