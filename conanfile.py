@@ -27,8 +27,10 @@ class PremakeInstallerConan(ConanFile):
             zip_sha256 = "f2e9c2d7b33e06b51dc2d0a9d4d1d398e4debad0d8254e17a031b04f57da4d67"
         elif self.settings.os_build == "Linux":
             zip_name = "linux.tar.gz"
+            zip_sha256 = "41783914f792e10a34ebf0fd4bd14a10a53c18047e5b58d782c822804eb7703b"
         elif self.settings.os_build == "Macos":
             zip_name = "macosx.tar.gz"
+            zip_sha256 = "a6b89b3d2891c45637e87aa75311d9c04fe79d6b2aac5e2ab24a746b8178aceb"
         source_url = "http://sourceforge.net/projects/premake/files/Premake/4.3/premake-{}-{}/download".format(self.version, zip_name)
         tools.get(source_url, sha256=zip_sha256)
         # os.rename('premake-core-%s' % self.version, self._source_subfolder)
