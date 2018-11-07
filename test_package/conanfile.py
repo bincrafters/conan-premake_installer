@@ -8,6 +8,4 @@ from conans import ConanFile
 class TestPackageConan(ConanFile):
 
     def test(self):
-        # FIXME: It's working, but still has an exit code of 1, why!?
-        # self.run("premake4 --version", run_environment=True)
-        pass
+        self.run('premake4 --version || echo "ignore premake4 exit code"', run_environment=True)

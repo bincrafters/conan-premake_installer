@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from conans import ConanFile, tools
+from conans import ConanFile, tools, MSBuild, AutoToolsBuildEnvironment
 import os
 
 
@@ -15,27 +15,40 @@ class PremakeInstallerConan(ConanFile):
     author = "Bincrafters <bincrafters@gmail.com>"
     license = "BSD"
     exports = ["LICENSE.md"]
-    settings = 'os_build'
-
-    def configure(self):
-        if not self.settings.os_build in ["Windows", "Linux", "Macos"]:
-            raise Exception("Only Windows, Linux and macOS are supported")
+    settings = {"os_build": ["Windows", "Linux", "Macos"],
+                "arch_build": ["x86", "x86_64"]}
+    _source_subfolder = 'sources'
 
     def source(self):
-        if self.settings.os_build == "Windows":
-            zip_name = "windows.zip"
-        elif self.settings.os_build == "Linux":
-            zip_name = "linux.tar.gz"
-        elif self.settings.os_build == "Macos":
-            zip_name = "macosx.tar.gz"
-        source_url = "http://sourceforge.net/projects/premake/files/Premake/4.4/premake-{}-{}/download".format(self.version, zip_name)
-        tools.get(source_url, sha256="09614c122156617a2b7973cc9f686daa32e64e3e7335d38db887cfb8f6a8574d")
-        # os.rename('premake-core-%s' % self.version, self._source_subfolder)
+        source_url = "http://sourceforge.net/projects/premake/files/Premake/{shortversion}/premake-{version}-src.zip/" \
+                     "download".format(version=self.version,
+                                       shortversion=self.version.split("-")[0])
+        tools.get(source_url)
+        os.rename('premake-%s' % self.version, self._source_subfolder)
+
+    def _build_msvc(self):
+        with tools.chdir(os.path.join(self._source_subfolder, 'build', 'vs2012')):
+
+            if self.settings.arch_build == "x86_64":
+                tools.replace_in_file('Premake4.sln', 'Win32', 'x64')
+                tools.replace_in_file('Premake4.vcxproj', 'Win32', 'x64')
+
+            msbuild = MSBuild(self)
+            msbuild.build('Premake4.sln', build_type='Release', arch=self.settings.arch_build)
+
+    def _build_make(self):
+        with tools.chdir(os.path.join(self._source_subfolder, 'build', 'gmake.unix')):
+            env_build = AutoToolsBuildEnvironment(self.settings)
+            env_build.make(args=['config=release'])
 
     def build(self):
-        pass
+        if self.settings.os_build == "Windows":
+            self._build_msvc()
+        else:
+            self._build_make()
 
     def package(self):
+        self.copy(pattern="LICENSE.txt", dst="licenses", src=self._source_subfolder)
         self.copy(pattern="*premake4.exe", dst="bin", keep_path=False)
         self.copy(pattern="*premake4", dst="bin", keep_path=False)
 
