@@ -34,7 +34,8 @@ class PremakeInstallerConan(ConanFile):
                 tools.replace_in_file('Premake4.vcxproj', 'MachineX86', 'MachineX64')
 
             msbuild = MSBuild(self)
-            msbuild.build('Premake4.sln', build_type='Release', arch=self.settings.arch_build)
+            msbuild.build('Premake4.sln', build_type='Release', arch=self.settings.arch_build,
+                          platforms={'x86': 'Win32'})
 
     def _build_make(self):
         with tools.chdir(os.path.join(self._source_subfolder, 'build', 'gmake.unix')):
