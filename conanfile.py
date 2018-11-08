@@ -23,7 +23,7 @@ class PremakeInstallerConan(ConanFile):
         source_url = "http://sourceforge.net/projects/premake/files/Premake/{shortversion}/premake-{version}-src.zip/" \
                      "download".format(version=self.version,
                                        shortversion=self.version.split("-")[0])
-        tools.get(source_url)
+        tools.get(source_url, sha256="0fa1ed02c5229d931e87995123cdb11d44fcc8bd99bba8e8bb1bbc0aaa798161")
         os.rename('premake-%s' % self.version, self._source_subfolder)
 
     def _build_msvc(self):
@@ -33,8 +33,9 @@ class PremakeInstallerConan(ConanFile):
                 tools.replace_in_file('Premake4.sln', 'Win32', 'x64')
                 tools.replace_in_file('Premake4.vcxproj', 'Win32', 'x64')
 
-            msbuild = MSBuild(self)
-            msbuild.build('Premake4.sln', build_type='Release', arch=self.settings.arch_build)
+            with tools.vcvars(self.settings, arch=str(self.settings.arch_build), force=True):
+                msbuild = MSBuild(self)
+                msbuild.build('Premake4.sln', build_type='Release', arch=self.settings.arch_build)
 
     def _build_make(self):
         with tools.chdir(os.path.join(self._source_subfolder, 'build', 'gmake.unix')):
