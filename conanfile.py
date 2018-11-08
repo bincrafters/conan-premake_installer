@@ -22,7 +22,7 @@ class PremakeInstallerConan(ConanFile):
     def source(self):
         source_url = "http://sourceforge.net/projects/premake/files/Premake/{version}/premake-{version}-src.zip".format(
             version=self.version)
-        tools.get(source_url)
+        tools.get(source_url, sha256="36536490f8928d8ecde135da80cd8b751ea5bebe50cabba5c0de49cd41cb2780")
         os.rename('premake-%s' % self.version, self._source_subfolder)
 
     def _build_msvc(self):
