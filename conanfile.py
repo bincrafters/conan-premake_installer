@@ -39,7 +39,7 @@ class PremakeInstallerConan(ConanFile):
                               platforms={'x86': 'Win32'})
 
     def _build_make(self):
-        make = "gmake.macosx" if self.settings.os == "Macos" else "gmake.unix"
+        make = "gmake.macosx" if self.settings.os_build == "Macos" else "gmake.unix"
         with tools.chdir(os.path.join(self._source_subfolder, 'build', make)):
             env_build = AutoToolsBuildEnvironment(self)
             env_build.make(args=['config=release'])
