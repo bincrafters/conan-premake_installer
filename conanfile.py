@@ -39,7 +39,7 @@ class PremakeInstallerConan(ConanFile):
 
     def _build_make(self):
         with tools.chdir(os.path.join(self._source_subfolder, 'build', 'gmake.unix')):
-            env_build = AutoToolsBuildEnvironment(self.settings)
+            env_build = AutoToolsBuildEnvironment(self)
             env_build.make(args=['config=release'])
 
     def build(self):
