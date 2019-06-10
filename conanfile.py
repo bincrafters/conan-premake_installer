@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from conans import ConanFile, tools, AutoToolsBuildEnvironment
+from conans import ConanFile, tools, AutoToolsBuildEnvironment, MSBuild
 import os
 
 
@@ -22,20 +22,19 @@ class PremakeInstallerConan(ConanFile):
     def source(self):
         source_url = "https://github.com/premake/premake-core/releases/download/v{version}/premake-{version}-src.zip".format(version=self.version)
         tools.get(source_url, sha256="7c9fa4488156625c819dd03f2b48bfd4712fbfabdc2b5768e8c7f52dd7d16608")
-        self.run("ls -lah")
         os.rename('premake-%s' % self.version, self._source_subfolder)
 
     @property
     def _platform(self):
-        return {'Windows': 'gmake.windows',
+        return {'Windows': 'vs2017',
                 'Linux': 'gmake.unix',
                 'Macos': 'gmake.macosx'}.get(str(self.settings.os_build))
 
     def build(self):
         with tools.chdir(os.path.join(self._source_subfolder, 'build', self._platform)):
             if self.settings.os_build == 'Windows':
-                with tools.vcvars(self.settings):
-                    self.run('nmake config=release')
+                msbuild = MSBuild(self)
+                msbuild.build("Premake5.sln", platforms={'x86': 'x86', 'x86_64': 'x64'})
             elif self.settings.os_build == 'Linux':
                 env_build = AutoToolsBuildEnvironment(self)
                 env_build.make(args=['config=release'])
