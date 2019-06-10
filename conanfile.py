@@ -7,7 +7,7 @@ import os
 
 class PremakeInstallerConan(ConanFile):
     name = "premake_installer"
-    version = "5.0.0-alpha13"
+    version = "5.0.0-alpha14"
     description = "Premake is a command line utility which reads a scripted definition of a software project and, " \
                   "most commonly, uses it to generate project files for toolsets like Visual Studio, Xcode, or GNU Make"
     url = "https://github.com/bincrafters/conan-premake_installer"
@@ -20,21 +20,28 @@ class PremakeInstallerConan(ConanFile):
     _build_subfolder = "build_subfolder"
 
     def source(self):
-        source_url = "https://github.com/premake/premake-core/archive/v{version}.tar.gz".format(version=self.version)
-        tools.get(source_url, sha256="bfe983e24686c50cada935f74adad2aefe6581649734b2ab8c1aaa2de4d473c6")
-        os.rename('premake-core-%s' % self.version, self._source_subfolder)
+        source_url = "https://github.com/premake/premake-core/releases/download/v{version}/premake-{version}-src.zip".format(version=self.version)
+        tools.get(source_url, sha256="7c9fa4488156625c819dd03f2b48bfd4712fbfabdc2b5768e8c7f52dd7d16608")
+        self.run("ls -lah")
+        os.rename('premake-%s' % self.version, self._source_subfolder)
+
+    @property
+    def _platform(self):
+        return {'Windows': 'gmake.windows',
+                'Linux': 'gmake.unix',
+                'Macos': 'gmake.macosx'}.get(str(self.settings.os_build))
 
     def build(self):
-        with tools.chdir(self._source_subfolder):
+        with tools.chdir(os.path.join(self._source_subfolder, 'build', self._platform)):
             if self.settings.os_build == 'Windows':
                 with tools.vcvars(self.settings):
-                    self.run('nmake -f Bootstrap.mak windows')
+                    self.run('nmake config=release')
             elif self.settings.os_build == 'Linux':
                 env_build = AutoToolsBuildEnvironment(self)
-                env_build.make(args=['-f', 'Bootstrap.mak', 'linux'])
+                env_build.make(args=['config=release'])
             elif self.settings.os_build == 'Macos':
                 env_build = AutoToolsBuildEnvironment(self)
-                env_build.make(args=['-f', 'Bootstrap.mak', 'osx'])
+                env_build.make(args=['config=release'])
 
     def package(self):
         self.copy(pattern="*premake5.exe", dst="bin", keep_path=False)
