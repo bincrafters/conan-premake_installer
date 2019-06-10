@@ -34,7 +34,7 @@ class PremakeInstallerConan(ConanFile):
         with tools.chdir(os.path.join(self._source_subfolder, 'build', self._platform)):
             if self.settings.os_build == 'Windows':
                 msbuild = MSBuild(self)
-                msbuild.build("Premake5.sln", platforms={'x86': 'x86', 'x86_64': 'x64'}, build_type="Release")
+                msbuild.build("Premake5.sln", platforms={'x86': 'x86', 'x86_64': 'x64'}, build_type="Release", arch=self.settings.arch_build)
             elif self.settings.os_build == 'Linux':
                 env_build = AutoToolsBuildEnvironment(self)
                 env_build.make(args=['config=release'])
