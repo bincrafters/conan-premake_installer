@@ -45,8 +45,10 @@ class PremakeInstallerConan(ConanFile):
             if self.settings.os_build == "Linux" or self.settings.os_build == "Macos":
                 if self.settings.arch_build == "x86":
                     env_build.flags.append("-m32")
+                    env_build.link_flags.append("-m32")
                 elif self.settings.arch_build == "x86_64":
                     env_build.flags.append("-m64")
+                    env_build.link_flags.append("-m64")
             env_build.make(args=['config=release', "SILENT="])
 
     def build(self):
