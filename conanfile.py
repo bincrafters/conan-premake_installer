@@ -9,7 +9,6 @@ class PremakeInstallerConan(ConanFile):
                   "most commonly, uses it to generate project files for toolsets like Visual Studio, Xcode, or GNU Make"
     url = "https://github.com/bincrafters/conan-premake_installer"
     homepage = "https://premake.github.io/"
-    author = "Bincrafters <bincrafters@gmail.com>"
     license = "BSD"
     exports = ["LICENSE.md"]
     settings = 'os_build', 'arch_build', 'compiler'
