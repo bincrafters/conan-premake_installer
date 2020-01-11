@@ -1,7 +1,8 @@
-from conans import ConanFile
+from conans import ConanFile, tools
 
 
 class TestPackageConan(ConanFile):
 
     def test(self):
-        self.run("premake5 --version", run_environment=True)
+        if not tools.cross_building(self.settings):
+            self.run("some_tool --version")

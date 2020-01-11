@@ -5,20 +5,18 @@ import os
 class PremakeInstallerConan(ConanFile):
     name = "premake_installer"
     version = "5.0.0-alpha14"
-    description = "Premake is a command line utility which reads a scripted definition of a software project and, " \
-                  "most commonly, uses it to generate project files for toolsets like Visual Studio, Xcode, or GNU Make"
+    description = "Describe your software project just once, using Premake's simple and easy to read syntax, and build it everywhere"
     url = "https://github.com/bincrafters/conan-premake_installer"
     homepage = "https://premake.github.io/"
-    license = "BSD"
-    exports = ["LICENSE.md"]
-    settings = 'os_build', 'arch_build', 'compiler'
+    license = "BSD-3-Clause"
+    settings = "os_build", "arch_build", "compiler"
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
 
     def source(self):
-        source_url = "https://github.com/premake/premake-core/releases/download/v{version}/premake-{version}-src.zip".format(version=self.version)
-        tools.get(source_url, sha256="7c9fa4488156625c819dd03f2b48bfd4712fbfabdc2b5768e8c7f52dd7d16608")
-        os.rename('premake-%s' % self.version, self._source_subfolder)
+        tools.get(**self.conan_data["sources"][self.version])
+        extracted_dir = self.name + "_installer-" + self.version
+        os.rename(extracted_dir, self._source_subfolder)
 
     @property
     def _platform(self):
@@ -43,7 +41,9 @@ class PremakeInstallerConan(ConanFile):
         self.copy(pattern="*premake5", dst="bin", keep_path=False)
 
     def package_info(self):
-        self.env_info.PATH.append(os.path.join(self.package_folder, 'bin'))
+        bindir = os.path.join(self.package_folder, "bin")
+        self.output.info("Appending PATH environment variable: {}".format(bindir))
+        self.env_info.PATH.append(bindir)
 
     def package_id(self):
-        self.info.settings.compiler = 'Any'
+        del self.info.settings.compiler
