@@ -16,7 +16,7 @@ class PremakeInstallerConan(ConanFile):
 
     def source(self):
         tools.get(**self.conan_data["sources"][self.version])
-        extracted_dir = self.name + "_installer-" + self.version
+        extracted_dir = "premake" + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
 
     @property
