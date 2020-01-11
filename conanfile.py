@@ -5,6 +5,7 @@ import os
 class PremakeInstallerConan(ConanFile):
     name = "premake_installer"
     version = "5.0.0-alpha14"
+    topics = ("conan", "premake", "build", "build-systems")
     description = "Describe your software project just once, using Premake's simple and easy to read syntax, and build it everywhere"
     url = "https://github.com/bincrafters/conan-premake_installer"
     homepage = "https://premake.github.io/"
